@@ -1,0 +1,15 @@
+.folder{
+	width: 70px;
+    height: 70px;
+    float: left;
+    background-image: url(../image/folder.jpg);
+}
+
+.pdf{
+	width: 64px;
+    height: 64px;
+    float: left;
+    background-image: url(../image/pdf-icon-128x128.png);
+	background-repeat: no-repeat;
+    background-size: 64px 64px;
+}
