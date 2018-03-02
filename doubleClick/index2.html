@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link href="css/style.css" rel="stylesheet" type="text/css"/>
+<script>
+$(document).ready(function(){
+    $(".pdf").dblclick(function(){
+        window.open("content/sample.pdf", "sample", "height=90px, left=30px, location=no, menubar=no, resizable=no");
+    });
+});
+
+function gobackToFolder(){
+	window.location.href="doubleClick.html";
+}
+</script>
+</head>
+<body>
+
+<button onclick="gobackToFolder()">Back</button>
+<br>
+<div class="pdf"></div>
+
+<div class="pdf"></div>
+
+<div class="pdf"></div>
+
+<div class="pdf"></div>
+
+<div class="pdf"></div>
+
+</body>
+</html>
