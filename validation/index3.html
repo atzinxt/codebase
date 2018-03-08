@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<style>
+	.errBorder{
+		border-bottom: 2px solid red;
+	}
+	.validationText{
+		color:red;
+	}
+	</style>
+<script>
+VALIDEMAILSERVERS = ["gmail", "hotmail", "yahoo"];
+$(document).ready(function(){
+    $("#btnSubmit").on("click", function(e){
+		if(validation()){
+			alert("Success");
+		}else{
+			alert("Failure");
+		}
+	});
+	
+	$(".form-control").on("keydown", function(e){
+		var v = $(this);
+		var elementId = $(this).attr("id");
+		if(elementId !== "email"){
+			if (e.shiftKey || e.ctrlKey || e.altKey) {
+				e.preventDefault();
+			} else {
+				var key = e.keyCode;
+				if (!((key == 8) || (key == 32) || (key == 46) || (key >= 35 && key <= 40) || (key >= 65 && key <= 90))) {
+					e.preventDefault();
+				}
+			}
+			$("#" + elementId).removeClass("errBorder");
+			$("#" + elementId + "_Validation").remove();
+		}else{
+			var email = $("#" + elementId).val();
+			if(isValidEmailAddress(email)){
+				$("#" + elementId).removeClass("errBorder");
+				$("#" + elementId + "_Validation").remove();
+			}
+		}
+	});
+	
+	$("#country").on("change", function(e){
+		var country  = $("#country").val();
+		if(parseInt(country) === 0){
+			if(!$("#country").hasClass("errBorder")){
+				$("#country").addClass("errBorder").after("<div id=\"country_Validation\" class=\"validationText\">Select Your country</div>");	
+				couter++;
+			}
+		}else{
+			$("#country").removeClass("errBorder");
+			$("#country_Validation").remove();
+		}
+	});
+	
+	$(".checkbox").on("change", function(e){
+		var selectedCars = $("input:checkbox:checked").length;
+		if(selectedCars < 2){
+			if(!$("#car").hasClass("errBorder")){
+				$("#car").addClass("errBorder").after("<div id=\"car_Validation\" class=\"validationText\">Select Your cars</div>");	
+			}
+		}else{
+			$("#car").removeClass("errBorder");
+			$("#car_Validation").remove();
+		}
+	});
+	
+	$("input:radio[name=\"optradio\"]").change(function(){
+		var selectedGender = $('input:radio[name="optradio"]:checked').length;
+		if(selectedGender === 0){
+			if(!$("#gender").hasClass("errBorder")){
+				$("#gender").addClass("errBorder").after("<div id=\"gender_Validation\" class=\"validationText\">Select Your Gender</div>");	
+			}
+		}else{
+			$("#gender").removeClass("errBorder");
+			$("#gender_Validation").remove();
+		}
+	});
+});
+
+function isValidEmailAddress(emailAddress) {
+    var pattern = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
+    return pattern.test(emailAddress);
+}
+
+function isValidEmailServer(emailAddress) {
+    var emailAddressParts1 = emailAddress.split("@");
+	var emailAddressParts2 = emailAddressParts1[1].split(".");
+	var emailServer = emailAddressParts2[0];
+	if(jQuery.inArray(emailServer, VALIDEMAILSERVERS) !== -1){
+		return true;
+	}else{
+		return false;
+	}
+}
+
+function validation(){
+	var couter = 0;
+	/*--------------------------------------Name validation--------------------------------*/
+	var name = $("#name").val();
+	if(name === ""){
+		if(!$("#name").hasClass("errBorder")){
+			$("#name").addClass("errBorder").after("<div id=\"name_Validation\" class=\"validationText\">Enter name</div>");
+			couter++;
+		}
+	}else{
+		$("#name").removeClass("errBorder");
+		$("#name_Validation").remove();
+	}
+	/*--------------------------------------Name validation--------------------------------*/
+
+	/*--------------------------------------Lastname validation----------------------------*/
+	var lastname  = $("#lastname").val();
+	if(lastname === ""){
+		if(!$("#lastname").hasClass("errBorder")){
+			$("#lastname").addClass("errBorder").after("<div id=\"lastname_Validation\" class=\"validationText\">Enter your last name</div>");	
+			couter++;
+		}
+	}else{
+		$("#lastname").removeClass("errBorder");
+		$("#lastname_Validation").remove();
+	}
+	/*--------------------------------------Lastname validation----------------------------*/
+	
+	/*--------------------------------------Email validation----------------------------*/
+	var email  = $("#email").val();
+	if(email === ""){
+		if(!$("#email").hasClass("errBorder")){
+			$("#email").addClass("errBorder").after("<div id=\"email_Validation\" class=\"validationText\">The email address cant be blank</div>");	
+			couter++;
+		}
+		
+	}else{
+		if(!isValidEmailAddress(email)){
+			$("#email").addClass("errBorder").after("<div id=\"email_Validation\" class=\"validationText\">The email address you entered is not valid</div>");	
+			couter++;
+		}
+		else{
+			$("#email").removeClass("errBorder");
+			$("#email_Validation").remove();
+		}
+		
+		if(!isValidEmailServer(email)){
+			$("#email").addClass("errBorder").after("<div id=\"email_Validation\" class=\"validationText\">The email Server you entered is not valid</div>");	
+			couter++;
+		}else{
+			$("#email").removeClass("errBorder");
+			$("#email_Validation").remove();
+		}
+	}
+	/*--------------------------------------Email validation----------------------------*/
+	
+	
+	/*--------------------------------------Country validation--------------------------*/
+	var country  = $("#country").val();
+	if(parseInt(country) === 0){
+		if(!$("#country").hasClass("errBorder")){
+			$("#country").addClass("errBorder").after("<div id=\"country_Validation\" class=\"validationText\">Select Your country</div>");	
+			couter++;
+		}
+	}else{
+		$("#country").removeClass("errBorder");
+		$("#country_Validation").remove();
+	}
+	/*--------------------------------------Country validation--------------------------*/
+	
+	/*--------------------------------------Car validation------------------------------*/
+	var selectedCars = $("input:checkbox:checked").length;
+	if(selectedCars < 2){
+		if(!$("#car").hasClass("errBorder")){
+			$("#car").addClass("errBorder").after("<div id=\"car_Validation\" class=\"validationText\">Select Your cars</div>");	
+			couter++;
+		}
+	}else{
+		$("#car").removeClass("errBorder");
+		$("#car_Validation").remove();
+	}
+	/*--------------------------------------Car validation------------------------------*/
+	
+	/*--------------------------------------Gender validation---------------------------*/
+	var selectedGender = $('input:radio[name="optradio"]:checked').length;
+	if(selectedGender === 0){
+		if(!$("#gender").hasClass("errBorder")){
+			$("#gender").addClass("errBorder").after("<div id=\"gender_Validation\" class=\"validationText\">Select Your Gender</div>");	
+			couter++;
+		}
+	}else{
+		$("#gender").removeClass("errBorder");
+		$("#gender_Validation").remove();
+	}
+	/*--------------------------------------Gender validation---------------------------*/
+	
+	if(couter > 0){
+		return false;
+	}
+	else{
+		return true;
+	}
+}
+</script>
+</head>
+<body>
+<div class="col-lg-12 col-md-12 col-sm-12 col-sx-12">
+	<div class="form-group">
+      <label for="name">Name:</label>
+      <input type="text" class="form-control" id="name" name="name">
+    </div>
+	
+	<div class="form-group">
+      <label for="name">Lastname:</label>
+      <input type="text" class="form-control" id="lastname" name="lastname">
+    </div>
+	
+	<div class="form-group">
+      <label for="name">Email:</label>
+      <input type="text" class="form-control" id="email" name="email">
+    </div>
+	
+	<div class="form-group">
+		<select class="form-control" id="country">
+			<option value="0">Select Country</option>
+			<option value="1">US</option>
+			<option value="2">Mexico</option>
+			<option value="3">Brazil</option>
+			<option value="4">Colombia</option>
+			<option value="5">Canada</option>
+			<option value="6">Peru</option>
+			<option value="7">Chile</option>
+			<option value="8">Uruguay</option>
+		</select>
+    </div>
+	
+	<div id="car" class="col-lg-12 col-md-12 col-sm-12 col-sx-12">
+		<div class="col-lg-2 col-md-6 col-sm-6 col-sx-6">
+			<input type="checkbox" name="vehicle" value="Bike" class="checkbox"> Bike
+		</div>
+		<div class="col-lg-2 col-md-6 col-sm-6 col-sx-6">
+			<input type="checkbox" name="vehicle" value="Car" class="checkbox"> Car
+		</div>
+		<div class="col-lg-2 col-md-6 col-sm-6 col-sx-6">
+			<input type="checkbox" name="vehicle" value="Bus" class="checkbox"> Bus
+		</div>
+		<div class="col-lg-2 col-md-6 col-sm-6 col-sx-6">
+			<input type="checkbox" name="vehicle" value="Train" class="checkbox"> Train
+		</div>
+		<div class="col-lg-2 col-md-6 col-sm-6 col-sx-6">
+			<input type="checkbox" name="vehicle" value="Flight" class="checkbox"> Flight
+		</div>
+		<div class="col-lg-2 col-md-6 col-sm-6 col-sx-6">
+			<input type="checkbox" name="vehicle" value="Ship" class="checkbox"> Ship
+		</div>
+	</div>
+	<hr>
+	<div id="gender" class="form-group">
+		<div class="radio">
+		  <label><input type="radio" name="optradio" value="M">Male</label>
+		</div>
+		<div class="radio">
+		  <label><input type="radio" name="optradio" value="F">Female</label>
+		</div>
+	</div>
+	<hr>
+	<div class="col-lg-12 col-md-12 col-sm-12 col-sx-12">
+		<button id="btnSubmit" type="button" class="btn">Submit</button>
+	</div>
+	
+</div>
+</body>
+</html>
