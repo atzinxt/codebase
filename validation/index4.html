@@ -9,7 +9,13 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <style>
 	.errBorder{
-		border-bottom: 2px solid red;
+		border-bottom: 4px solid red;
+	}
+	.warningBorder{
+		border-bottom: 4px solid #fff700;
+	}
+	.successBorder{
+		border-bottom: 4px solid #00ce2c;
 	}
 	.validationText{
 		color:red;
@@ -17,7 +23,7 @@
 	</style>
 	<script>
 	$(document).ready(function(){
-		$("#creditCard").on("keydown", function(e){
+		$(".creditCard").on("keydown", function(e){
 			if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
 				 // Allow: Ctrl+A, Command+A
 				(e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) || 
@@ -28,19 +34,66 @@
 			}
 			// Ensure that it is a number and stop the keypress
 			if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-				
 				e.preventDefault();
 			}
 		});
+		
+		$(".creditCard").on("keyup", function(e){
+			var creditCardval = $(this).val();
+			if(creditCardval.length > 3){ //Credit cards always has 16 Digits
+				e.preventDefault();
+			}
+			if(creditCardval.length === 4){
+				var id = this.id;
+				var index = id.substr(id.length - 1);
+				index++;
+				$('#creditCardPart' + index).focus();
+			}
+		});
+		
+		var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+        var mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
+		
+		$("#password").on("keyup", function(e){
+			var passwordVal = $(this).val();
+			if(strongRegex.test(passwordVal)) {
+				$("#password").addClass("successBorder");
+			} else if(mediumRegex.test(passwordVal)) {
+				$("#password").addClass("warningBorder");
+			} else {
+				$("#password").addClass("errBorder");
+			}
+		});
+
 	});
 	</script>
 </head>
 <body>
-<div class="col-lg-12 col-md-12 col-sm-12 col-sx-12">
+<div class="col-lg-6 col-md-12 col-sm-12 col-sx-12">
 	<div class="form-group">
-      <label for="name">Credit Card:</label>
-      <input type="text" class="form-control" id="creditCard" name="creditCard">
-	  <!--<input type="number" id="creditCard" name="creditCard">-->
+		<div class="col-lg-12 col-md-12 col-sm-12 col-sx-12">
+		<label for="name">Credit Card:</label>
+		</div>
+	  <div class="col-lg-3 col-md-3 col-sm-3 col-sx-3">
+		<input type="text" class="form-control creditCard" id="creditCardPart1" name="creditCardPart1" tabindex="1">
+	  </div>
+	  <div class="col-lg-3 col-md-3 col-sm-3 col-sx-3">
+		<input type="text" class="form-control creditCard" id="creditCardPart2" name="creditCardPart2" tabindex="2">
+	  </div>
+	  <div class="col-lg-3 col-md-3 col-sm-3 col-sx-3">
+		<input type="text" class="form-control creditCard" id="creditCardPart3" name="creditCardPart3" tabindex="3">
+	  </div>
+	  <div class="col-lg-3 col-md-3 col-sm-3 col-sx-3">
+		<input type="text" class="form-control creditCard" id="creditCardPart4" name="creditCardPart4" tabindex="4">
+	  </div>
+    </div>
+	<div class="form-group">
+		<div class="col-lg-12 col-md-12 col-sm-12 col-sx-12">
+		<label for="name">Password:</label>
+		</div>
+	  <div class="col-lg-12 col-md-12 col-sm-12 col-sx-12">
+		<input type="text" class="form-control" id="password" name="password">
+	  </div>
     </div>
 </div>
 </body>
