@@ -8,14 +8,14 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <style>
-	.errBorder{
-		border-bottom: 4px solid red;
+	.red{
+		color:red;
 	}
-	.warningBorder{
-		border-bottom: 4px solid #fff700;
+	.yellow{
+		color:#f7aa1e;
 	}
-	.successBorder{
-		border-bottom: 4px solid #00ce2c;
+	.green{
+		color:#00ce2c;
 	}
 	.validationText{
 		color:red;
@@ -43,28 +43,85 @@
 			if(creditCardval.length > 3){ //Credit cards always has 16 Digits
 				e.preventDefault();
 			}
-			if(creditCardval.length === 4){
+			if(creditCardval.length >= 4){
 				var id = this.id;
+				var val = this.value;
+				val = val.substring(0, 4);
+				$("#" + id).val(val);
+				
 				var index = id.substr(id.length - 1);
 				index++;
 				$('#creditCardPart' + index).focus();
 			}
 		});
 		
-		var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+		var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,12})");
         var mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
 		
 		$("#password").on("keyup", function(e){
 			var passwordVal = $(this).val();
-			if(strongRegex.test(passwordVal)) {
-				$("#password").addClass("successBorder");
-			} else if(mediumRegex.test(passwordVal)) {
-				$("#password").addClass("warningBorder");
-			} else {
-				$("#password").addClass("errBorder");
+			if(passwordVal !== ""){
+				if(strongRegex.test(passwordVal)) {
+					$(".password_validationIcon").html("<span class=\"glyphicon glyphicon-ok green\"></span>");
+				} else if(mediumRegex.test(passwordVal)) {
+					$(".password_validationIcon").html("<span class=\"glyphicon glyphicon-ok yellow\"></span>");
+				} else {
+					$(".password_validationIcon").html("<span class=\"glyphicon glyphicon-remove red\"></span>");
+				}
+			}			
+		});
+		
+		var charOnly = new RegExp("^(?=.*[a-z])|(?=.*[A-Z])");
+		var numberOnly = new RegExp("^(?=.*[0-9])");
+		
+		$("#rfc").on("keyup", function(e){
+			var rfcVal = $(this).val();
+			if(rfcVal !== ""){
+				var counter = 0;
+				
+				var part1 = rfcVal.substring(0, 4);
+				if(part1 === ""){
+					counter++;
+				}
+				if(!charOnly.test(part1)){
+					counter++;
+				}
+				
+				var part2 = rfcVal.substring(4, 10);
+				if(part2 === ""){
+					counter++;
+				}
+				if(!numberOnly.test(part2)){
+					counter++;
+				}
+				
+				var part3 = rfcVal.substring(10, 12);
+				if(part3 === ""){
+					counter++;
+				}
+				if(!charOnly.test(part3)){
+					counter++;
+				}
+				
+				var part4 = rfcVal.substring(12, 13);
+				if(part4 === ""){
+					counter++;
+				}
+				if(!numberOnly.test(part4)){
+					counter++;
+				}
+				
+				if(rfcVal.length > 13){
+					counter++;
+				}
+				
+				if(counter === 0){
+					$(".rfc_validationIcon").html("<span class=\"glyphicon glyphicon-ok green\"></span>");
+				}else{
+					$(".rfc_validationIcon").html("<span class=\"glyphicon glyphicon-remove red\"></span>");
+				}
 			}
 		});
-
 	});
 	</script>
 </head>
@@ -91,8 +148,20 @@
 		<div class="col-lg-12 col-md-12 col-sm-12 col-sx-12">
 		<label for="name">Password:</label>
 		</div>
-	  <div class="col-lg-12 col-md-12 col-sm-12 col-sx-12">
+	  <div class="col-lg-11 col-md-11 col-sm-11 col-sx-11">
 		<input type="text" class="form-control" id="password" name="password">
+	  </div>
+	  <div class="col-lg-1 col-md-1 col-sm-1 col-sx-1 password_validationIcon">
+	  </div>
+    </div>
+	<div class="form-group">
+		<div class="col-lg-12 col-md-12 col-sm-12 col-sx-12">
+		<label for="name">RFC:</label>
+		</div>
+	  <div class="col-lg-11 col-md-11 col-sm-11 col-sx-11">
+		<input type="text" class="form-control" id="rfc" name="rfc">
+	  </div>
+	  <div class="col-lg-1 col-md-1 col-sm-1 col-sx-1 rfc_validationIcon">
 	  </div>
     </div>
 </div>
